@@ -51,3 +51,9 @@ domains:
 
 [Basic distracting
 domains](https://github.com/fullpipe/pogo/blob/master/config.go#L103)
+
+## TODO
+
+- wrap it in app?
+- no sudo solution
+- icons
