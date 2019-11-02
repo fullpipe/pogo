@@ -22,7 +22,7 @@ sudo pogo
 or to run it in background
 
 ```bash
-nohup sudo pogo &
+sudo nohup pogo &
 ```
 
 then start your pomodoro session from tray
