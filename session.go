@@ -53,6 +53,7 @@ func (session *session) rest() {
 	for _, bad := range session.config.Domains.Bad {
 		if hosts.Has(session.config.WorkIp, bad) {
 			hosts.Remove(session.config.WorkIp, bad)
+			hosts.Remove(session.config.WorkIp, "www."+bad)
 		}
 	}
 
@@ -70,6 +71,7 @@ func (session *session) work() {
 	for _, bad := range session.config.Domains.Bad {
 		if !hosts.Has(session.config.WorkIp, bad) {
 			hosts.Add(session.config.WorkIp, bad)
+			hosts.Add(session.config.WorkIp, "www."+bad)
 		}
 	}
 
