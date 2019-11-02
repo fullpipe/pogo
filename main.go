@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/0xAX/notificator"
 	"github.com/getlantern/systray"
 )
@@ -24,7 +22,6 @@ func onReady() {
 	})
 
 	config := getConfig()
-	fmt.Println(config)
 	newSession := systray.AddMenuItem("Start session", "Start new pomodoro session")
 	quit := systray.AddMenuItem("Quit", "Quit pomodoro session and app")
 	var completeCh chan struct{}
