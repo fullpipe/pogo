@@ -1,8 +1,8 @@
 # pogo
 
 Pogo is a simple [pomodoro
-technique](https://en.wikipedia.org/wiki/Pomodoro_Technique) tool. You start new session  
-and nothing will distract you.
+technique](https://en.wikipedia.org/wiki/Pomodoro_Technique) tool.
+You start new session and nothing will distract you.
 
 ## Installation
 
@@ -32,7 +32,8 @@ then start your pomodoro session from tray
 ## Configuration
 
 By default pogo's session contains 4 pomodoro sessions: 25 mins of work and 5
-mins of rest. This could be modified by config file.
+mins of rest.  
+This could be modified by config file.
 
 ```yaml
 # ~/.config/pogo/pogo.yaml
