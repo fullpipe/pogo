@@ -1,9 +1,13 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/0xAX/notificator"
 	"github.com/getlantern/systray"
 )
+
+var currentSession *session
 
 func main() {
 	systray.Run(onReady, onExit)
@@ -20,20 +24,21 @@ func onReady() {
 	})
 
 	config := getConfig()
-	newSession := systray.AddMenuItem("New session", "Start new pomodoro session")
+	fmt.Println(config)
+	newSession := systray.AddMenuItem("Start session", "Start new pomodoro session")
 	quit := systray.AddMenuItem("Quit", "Quit pomodoro session and app")
-	var completeCh chan bool
+	var completeCh chan struct{}
 
 	go func() {
 		for {
 			select {
 			case <-newSession.ClickedCh:
 				newSession.Disable()
-				session := &session{
+				currentSession = &session{
 					config: config,
 					notify: notify,
 				}
-				completeCh = session.start()
+				completeCh = currentSession.start()
 
 			case <-completeCh:
 				newSession.Enable()
@@ -47,5 +52,7 @@ func onReady() {
 }
 
 func onExit() {
-
+	if currentSession != nil {
+		currentSession.rest()
+	}
 }

@@ -2,11 +2,12 @@ package main
 
 import (
 	"io/ioutil"
-	"log"
 
 	"github.com/mitchellh/go-homedir"
 	"gopkg.in/yaml.v2"
 )
+
+const DefaulWorkIp = "127.0.0.1"
 
 type Config struct {
 	Pomodoro struct {
@@ -14,6 +15,7 @@ type Config struct {
 		Rest    int `yaml:"rest"`
 		Repeats int `yaml:"repeats"`
 	} `yaml:"pomodoro"`
+	WorkIp  string `yaml:"work_ip"`
 	Domains struct {
 		Good []string `yaml:"good"`
 		Bad  []string `yaml:"bad"`
@@ -25,15 +27,17 @@ func getConfig() *Config {
 	if err != nil {
 		panic(err)
 	}
-	config := &Config{}
+
 	data, err := ioutil.ReadFile(home + "/.config/pogo/pogo.yaml")
 	if err != nil {
 		return defaultConfig()
 	}
 
+	config := &Config{}
 	err = yaml.Unmarshal([]byte(data), &config)
 	if err != nil {
-		log.Fatalf("error: %v", err)
+		// TODO: may be return defaultConfig
+		panic(err)
 	}
 
 	if config.Pomodoro.Work <= 0 {
@@ -46,6 +50,10 @@ func getConfig() *Config {
 
 	if config.Pomodoro.Repeats <= 0 {
 		config.Pomodoro.Repeats = 4
+	}
+
+	if config.WorkIp == "" {
+		config.WorkIp = DefaulWorkIp
 	}
 
 	config.Domains.Bad = unique(append(config.Domains.Bad, getBaseDistractors()...))
@@ -70,8 +78,10 @@ func defaultConfig() *Config {
 	config.Pomodoro.Rest = 5
 	config.Pomodoro.Repeats = 25
 
+	config.WorkIp = DefaulWorkIp
+
 	config.Domains.Good = []string{}
-	config.Domains.Bad = []string{}
+	config.Domains.Bad = getBaseDistractors()
 
 	return config
 }

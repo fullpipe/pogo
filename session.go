@@ -13,12 +13,12 @@ type session struct {
 	notify *notificator.Notificator
 }
 
-func (session *session) start() chan bool {
-	complete := make(chan bool)
+func (session *session) start() chan struct{} {
+	complete := make(chan struct{})
 
 	// TODO: add quit channel
 
-	go func(chan bool) {
+	go func(chan struct{}) {
 		for repeat := 1; repeat <= session.config.Pomodoro.Repeats; repeat++ {
 			lockTimer := time.NewTimer(time.Duration(session.config.Pomodoro.Work) * time.Minute)
 			// TODO: use icons instead of text
@@ -36,7 +36,7 @@ func (session *session) start() chan bool {
 			<-restTimer.C
 		}
 
-		complete <- true
+		complete <- struct{}{}
 
 	}(complete)
 
@@ -46,13 +46,13 @@ func (session *session) start() chan bool {
 func (session *session) rest() {
 	hosts, err := goodhosts.NewHosts()
 	if err != nil {
+		// TODO: may be it`s better just notify and stop
 		panic(err)
 	}
 
 	for _, bad := range session.config.Domains.Bad {
-		if hosts.Has("127.0.0.1", bad) {
-			hosts.Remove("127.0.0.1", bad)
-			hosts.Remove("127.0.0.1", "www."+bad)
+		if hosts.Has(session.config.WorkIp, bad) {
+			hosts.Remove(session.config.WorkIp, bad)
 		}
 	}
 
@@ -68,9 +68,8 @@ func (session *session) work() {
 	}
 
 	for _, bad := range session.config.Domains.Bad {
-		if !hosts.Has("127.0.0.1", bad) {
-			hosts.Add("127.0.0.1", bad)
-			hosts.Add("127.0.0.1", "www."+bad)
+		if !hosts.Has(session.config.WorkIp, bad) {
+			hosts.Add(session.config.WorkIp, bad)
 		}
 	}
 
