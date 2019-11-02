@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+	"os/exec"
 	"time"
 
 	"github.com/0xAX/notificator"
@@ -9,8 +11,9 @@ import (
 )
 
 type session struct {
-	config *Config
-	notify *notificator.Notificator
+	config      *Config
+	notify      *notificator.Notificator
+	stepCommand string
 }
 
 func (session *session) start() chan struct{} {
@@ -25,6 +28,7 @@ func (session *session) start() chan struct{} {
 			systray.SetTitle("I'm working hard")
 			session.notify.Push("Work hard", "", "", notificator.UR_NORMAL)
 			session.work()
+			session.execCommand()
 
 			<-lockTimer.C
 
@@ -32,6 +36,7 @@ func (session *session) start() chan struct{} {
 			systray.SetTitle("I'm resting")
 			session.notify.Push("Take a rest", "", "", notificator.UR_NORMAL)
 			session.rest()
+			session.execCommand()
 
 			<-restTimer.C
 		}
@@ -41,6 +46,17 @@ func (session *session) start() chan struct{} {
 	}(complete)
 
 	return complete
+}
+
+func (session *session) execCommand() {
+	if session.stepCommand == "" {
+		return
+	}
+
+	cmd := exec.Command("bash", "-c", session.stepCommand)
+	if err := cmd.Run(); err != nil {
+		log.Printf("Step command finished with error: %v", err)
+	}
 }
 
 func (session *session) rest() {

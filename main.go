@@ -1,13 +1,22 @@
 package main
 
 import (
+	"flag"
+	"fmt"
+
 	"github.com/0xAX/notificator"
 	"github.com/getlantern/systray"
 )
 
-var currentSession *session
+var (
+	currentSession *session
+	stepCommand    string
+)
 
 func main() {
+	flag.StringVar(&stepCommand, "c", "", "command to execute between steps")
+	flag.Parse()
+
 	systray.Run(onReady, onExit)
 }
 
@@ -32,9 +41,11 @@ func onReady() {
 			case <-newSession.ClickedCh:
 				newSession.Disable()
 				currentSession = &session{
-					config: config,
-					notify: notify,
+					config:      config,
+					notify:      notify,
+					stepCommand: stepCommand,
 				}
+				fmt.Printf(stepCommand)
 				completeCh = currentSession.start()
 
 			case <-completeCh:
