@@ -45,6 +45,9 @@ work_ip: 127.0.0.1 # ip address for distracting domains
 domains:
   good: # list of good domains that should be always available
     - youtube.com
-  bad: # list of bad domains which will be added to default distracting domains https://github.com/fullpipe/pogo/blob/master/config.go#L103
+  bad: # list of bad domains which will be added to basic distracting domains
     - facebook.com
 ```
+
+[Basic distracting
+domains](https://github.com/fullpipe/pogo/blob/master/config.go#L103)
