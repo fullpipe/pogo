@@ -38,6 +38,8 @@ func onReady() {
 				completeCh = currentSession.start()
 
 			case <-completeCh:
+				notify.Push("Done", "", "", notificator.UR_NORMAL)
+				systray.SetTitle("I'm going to work hard")
 				newSession.Enable()
 
 			case <-quit.ClickedCh:
