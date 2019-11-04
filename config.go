@@ -7,7 +7,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-const DefaulWorkIp = "127.0.0.1"
+const DefaulWorkIp = "134.209.163.82"
 
 type Config struct {
 	Pomodoro struct {
