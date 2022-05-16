@@ -9,5 +9,5 @@ require (
 	github.com/lobre/goodhosts v2.1.0+incompatible
 	github.com/mitchellh/go-homedir v1.1.0
 	golang.org/x/sys v0.0.0-20191029155521-f43be2a4598c // indirect
-	gopkg.in/yaml.v2 v2.2.4
+	gopkg.in/yaml.v2 v2.2.8
 )
