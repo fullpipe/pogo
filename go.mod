@@ -8,6 +8,6 @@ require (
 	github.com/getlantern/systray v0.0.0-20190727060347-6f0e5a3c556c
 	github.com/lobre/goodhosts v2.1.0+incompatible
 	github.com/mitchellh/go-homedir v1.1.0
-	golang.org/x/sys v0.0.0-20191029155521-f43be2a4598c // indirect
+	golang.org/x/sys v0.1.0 // indirect
 	gopkg.in/yaml.v2 v2.2.4
 )
